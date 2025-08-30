@@ -16,3 +16,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <App />
   </React.StrictMode>
 );
+
+const fontFamily = import.meta.env.VITE_FONT_FAMILY;
+
+// Dynamically load Google Font
+const link = document.createElement("link");
+link.rel = "stylesheet";
+link.href = `https://fonts.googleapis.com/css2?family=${fontFamily}:wght@400;500;700&display=swap`;
+document.head.appendChild(link);
+
+// Apply it as CSS variable
+document.documentElement.style.setProperty("--app-font", fontFamily);

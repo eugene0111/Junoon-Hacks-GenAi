@@ -1,10 +1,15 @@
 @import "tailwindcss";
 
+:root {
+  --app-font: var(--env(VITE_APP_FONT)); /* Pull from .env */
+}
+
 @theme {
   --color-google-red: #EA4335;
   --color-google-blue: #4285F4;
   --color-google-green: #34A853;
   --color-google-yellow: #FBBC05;
+
+  /* Override default sans */
+  --font-sans: var(--app-font), sans-serif;
 }
-
-

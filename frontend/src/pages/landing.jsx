@@ -134,7 +134,7 @@ const Header = ({ onLoginClick }) => (
 const Hero = () => (
   <section
     className="min-h-screen flex items-center justify-center pt-24 md:pt-0 bg-cover bg-center relative text-center"
-    style={{ backgroundImage: "url('/bg2.png')" }}
+    style={{ backgroundImage: "url('/gd.png')" }}
   >
     <div className="absolute inset-0 bg-black/40"></div>
     <div className="container mx-auto px-6 relative z-10">
@@ -238,6 +238,45 @@ const Roles = ({ onRoleSelect }) => {
   );
 };
 
+const LoginModal = ({ isOpen, onClose, selectedRole }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md relative animate-fade-in-scale">
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        
+        <h3 className="text-3xl font-bold text-center text-gray-800 mb-2">Welcome!</h3>
+        <p className="text-center text-gray-600 mb-8">
+          Joining as an <span className="font-semibold text-blue-600">{selectedRole || 'Explorer'}</span>. Let's get you started.
+        </p>
+        
+        <div className="space-y-4">
+          <button className="w-full bg-white border border-gray-300 text-gray-700 font-semibold py-3 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-all duration-300 shadow-sm">
+            <svg className="w-5 h-5 mr-3" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0124 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083L43.595 20H24v8h11.303a12.04 12.04 0 01-4.093 5.574l6.19 5.238C42.012 35.244 44 30.028 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+            Continue with Google
+          </button>
+        </div>
+        
+        <div className="my-6 flex items-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="flex-shrink mx-4 text-gray-500">OR</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+        </div>
+        
+        <form>
+            <input type="email" placeholder="Enter your email" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg mt-4 hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg">Continue with Email</button>
+        </form>
+
+      </div>
+    </div>
+  );
+};
+
+
 const Footer = () => (
   <footer className="bg-google-blue text-white">
     <div className="container mx-auto px-6 py-12">
@@ -304,17 +343,39 @@ const Footer = () => (
 // --- Main Page ---
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState('');
+
+  const handleRoleSelect = (role) => {
+    setSelectedRole(role);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenModal = () => {
+    setSelectedRole(''); // Clear role if opened from header
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const appFont = import.meta.env.VITE_APP_FONT || "sans-serif";
 
   return (
-    <div className="bg-white font-sans">
-      <Header onLoginClick={() => setIsModalOpen(true)} />
+    
+    <div className="font-sans bg-white">
+      <Header onLoginClick={handleOpenModal} />
       <main>
         <Hero />
         <ExplainerCarousel />
-        <Roles onRoleSelect={setSelectedRole} />
+        <Roles onRoleSelect={handleRoleSelect} />
       </main>
       <Footer />
+      <LoginModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        selectedRole={selectedRole}
+      />
     </div>
   );
 }
