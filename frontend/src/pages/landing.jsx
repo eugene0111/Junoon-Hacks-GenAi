@@ -121,6 +121,12 @@ const Header = ({ onLoginClick }) => (
       <h1 className="text-3xl font-bold text-gray-800 tracking-tighter">
         Kala<span className="text-google-blue">Ghar</span>
       </h1>
+      <nav className="hidden md:flex space-x-8 text-gray-700 font-medium">
+        <a href="#WhatIsKalaGhar" className="hover:text-google-blue transition">About</a>
+        <a href="#ExplainerCarousel" className="hover:text-google-blue transition">Features</a>
+        <a href="#roles" className="hover:text-google-blue transition">Apply Now</a>
+        <a href="#contact" className="hover:text-google-blue transition">Contact</a>
+      </nav>
       <button
         onClick={onLoginClick}
         className="bg-google-green text-white font-semibold px-6 py-2 rounded-lg hover:bg-google-red transition-colors duration-300 transform hover:scale-105"
@@ -134,7 +140,7 @@ const Header = ({ onLoginClick }) => (
 const Hero = () => (
   <section
     className="min-h-screen flex items-center justify-center pt-24 md:pt-0 bg-cover bg-center relative text-center"
-    style={{ backgroundImage: "url('/gd.png')" }}
+    style={{ backgroundImage: "url('/1.png')" }}
   >
     <div className="absolute inset-0 bg-black/40"></div>
     <div className="container mx-auto px-6 relative z-10">
@@ -160,20 +166,75 @@ const Hero = () => (
   </section>
 );
 
+const WhatIsKalaGhar = () => (
+  <section id="WhatIsKalaGhar" className="py-20 bg-gray-50 relative">
+    <div className="container mx-auto px-6 text-center">
+      <h3 className="text-4xl font-bold text-gray-800 mb-6">
+        What is <span className="text-black">Kala</span>
+        <span className="text-google-blue">Ghar</span>?
+      </h3>
+      <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+        KalaGhar is a digital ecosystem designed to celebrate and empower 
+        artisans by connecting them with buyers, investors, and ambassadors 
+        worldwide. We bridge tradition with technology, helping preserve 
+        cultural heritage while creating sustainable growth opportunities.
+      </p>
+      <div className="flex justify-center gap-6 flex-wrap">
+        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+          <h4 className="text-xl font-semibold text-google-yellow mb-2">For Artisans</h4>
+          <p className="text-gray-600 text-sm">Showcase and sell your craft to a global audience.</p>
+        </div>
+        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+          <h4 className="text-xl font-semibold text-google-green mb-2">For Buyers</h4>
+          <p className="text-gray-600 text-sm">Discover authentic handmade treasures.</p>
+        </div>
+        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+          <h4 className="text-xl font-semibold text-google-blue mb-2">For Investors</h4>
+          <p className="text-gray-600 text-sm">Support projects that fuel creativity and growth.</p>
+        </div>
+        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+          <h4 className="text-xl font-semibold text-google-red mb-2">For Ambassadors</h4>
+          <p className="text-gray-600 text-sm">Be a champion for artisans and heritage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+
 const ExplainerCarousel = () => {
   const features = [
-    { title: "Discover", description: "Explore handcrafted goods.", icon: "🎨" },
-    { title: "Empower", description: "Support artisans & communities.", icon: "🤝" },
-    { title: "Invest", description: "Fund projects & growth.", icon: "📈" },
-    { title: "Advocate", description: "Be a voice for heritage.", icon: "🌍" },
+    { 
+      title: "AI & Insights", 
+      description: "Get trend reports, auto product pages, and a voice guide to track demand and pricing.", 
+      icon: "🤖" 
+    },
+    { 
+      title: "Funding & Growth", 
+      description: "Access grants, micro-loans, and certifications with sustainability-focused support.", 
+      icon: "💡" 
+    },
+    { 
+      title: "Storytelling & Engagement", 
+      description: "Showcase product stories with video/audio, and involve buyers through votes & pre-orders.", 
+      icon: "📖" 
+    },
+    { 
+      title: "Support & Reach", 
+      description: "Get help from Karigar Ambassadors, hybrid events, and shared logistics networks.", 
+      icon: "🌍" 
+    },
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section id="ExplainerCarousel"
+      className="py-20 bg-cover bg-center relative"
+      style={{ backgroundImage: "url('/2.png')" }}
+    >
       <div className="container mx-auto px-6 text-center">
         <AnimatedSection>
           <h3 className="text-4xl font-bold text-gray-800 mb-4">
-            How It Works
+            How It Works ?
           </h3>
           <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
             A seamless platform connecting every part of the artisan economy.
@@ -197,6 +258,7 @@ const ExplainerCarousel = () => {
   );
 };
 
+
 const Roles = ({ onRoleSelect }) => {
   const roles = [
     { name: "Artisan", description: "Showcase your craft.", icon: <ArtisanIcon /> },
@@ -206,11 +268,16 @@ const Roles = ({ onRoleSelect }) => {
   ];
 
   return (
-    <section id="roles" className="py-20 bg-gray-50">
+    <section 
+      id="roles" 
+      className="py-20 bg-cover bg-center relative"
+      
+    >
+       
       <div className="container mx-auto px-6 text-center">
         <AnimatedSection>
           <h3 className="text-4xl font-bold text-gray-800 mb-4">
-            Find Your Place
+            Apply Now!
           </h3>
           <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
             Whether you create, collect, invest, or champion, KalaGhar has a
@@ -242,7 +309,7 @@ const LoginModal = ({ isOpen, onClose, selectedRole }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 backdrop-blur-sm bg-white/10 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md relative animate-fade-in-scale">
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -337,6 +404,9 @@ const Footer = () => (
         &copy; {new Date().getFullYear()} KalaGhar. All Rights Reserved.
       </div>
     </div>
+    <section 
+      id="contact" 
+    ></section>
   </footer>
 );
 
@@ -364,12 +434,18 @@ export default function LandingPage() {
   return (
     
     <div className="font-sans bg-white">
+        
       <Header onLoginClick={handleOpenModal} />
       <main>
         <Hero />
+        <WhatIsKalaGhar />
         <ExplainerCarousel />
         <Roles onRoleSelect={handleRoleSelect} />
+
+        
       </main>
+     
+
       <Footer />
       <LoginModal 
         isOpen={isModalOpen} 
