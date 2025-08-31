@@ -219,7 +219,17 @@ const ProductCard = ({ product }) => (
       </div>
     </div>
     <div className="p-5 flex flex-col flex-grow">
-      <p className="text-sm text-gray-500 mb-1">{product.artisan}</p>
+      {/* --- MODIFICATION START --- */}
+      <p className="text-sm text-gray-500 mb-1">
+        <Link
+          to={`/seller/${encodeURIComponent(product.artisan)}`}
+          className="hover:underline hover:text-google-blue"
+          onClick={(e) => e.stopPropagation()} // Stop click from propagating to the parent Link
+        >
+          {product.artisan}
+        </Link>
+      </p>
+      {/* --- MODIFICATION END --- */}
       <h3 className="text-lg font-bold text-gray-800 truncate">
         {product.name}
       </h3>
@@ -258,7 +268,17 @@ const IdeaCard = ({ idea }) => {
       />
       <div className="p-6 flex flex-col flex-grow">
         <h4 className="text-xl font-bold text-gray-800">{idea.title}</h4>
-        <p className="text-sm text-gray-500 mb-3">by {idea.artisan}</p>
+        {/* --- MODIFICATION START --- */}
+        <p className="text-sm text-gray-500 mb-3">
+          by{" "}
+          <Link
+            to={`/seller/${encodeURIComponent(idea.artisan)}`}
+            className="hover:underline hover:text-google-blue"
+          >
+            {idea.artisan}
+          </Link>
+        </p>
+        {/* --- MODIFICATION END --- */}
         <p className="text-gray-600 text-sm flex-grow">{idea.description}</p>
         <div className="flex justify-between items-center mt-6">
           <button
@@ -296,7 +316,7 @@ export default function BuyerMarketplace() {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredProducts = mockProducts.filter(
-    (p) => activeCategory === "All" || p.category === activeCategory
+    (p) => activeCategory === "All" || p.category === active-Category
   );
 
   return (
@@ -348,14 +368,12 @@ export default function BuyerMarketplace() {
           <div className="py-16">
             <div className="container mx-auto px-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {/* --- MODIFICATION START --- */}
                 {filteredProducts.map((product) => (
                   // Wrap ProductCard with Link and move the key to the Link
                   <Link to={`/product/${product.id}`} key={product.id}>
                     <ProductCard product={product} />
                   </Link>
                 ))}
-                {/* --- MODIFICATION END --- */}
               </div>
             </div>
           </div>
