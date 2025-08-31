@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 // --- SVG Icons (with Google colors) ---
@@ -170,61 +170,180 @@ const Hero = () => (
   </section>
 );
 
-const WhatIsKalaGhar = () => (
-  <section id="WhatIsKalaGhar" className="py-20 bg-gray-50 relative">
-    <div className="container mx-auto px-6 text-center">
-      <h3 className="text-4xl font-bold text-gray-800 mb-6">
-        What is <span className="text-black">Kala</span>
-        <span className="text-google-blue">Ghar</span> ?
-      </h3>
-      <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
-        KalaGhar is a digital ecosystem designed to celebrate and empower 
-        artisans by connecting them with buyers, investors, and ambassadors 
-        worldwide. We bridge tradition with technology, helping preserve 
-        cultural heritage while creating sustainable growth opportunities.
-      </p>
-    </div>
-  </section>
-);
+const testimonials = [
+  {
+    quote: "KalaGhar didn't just give me a marketplace; it gave my craft a global voice. My sales have tripled, connecting me with buyers who truly appreciate my heritage.",
+    name: "Priya S.",
+    role: "Textile Weaver from Rajasthan"
+  },
+  {
+    quote: "As a buyer, discovering authentic, handmade pieces with rich stories behind them has been a joy. This platform is a treasure trove of culture.",
+    name: "David L.",
+    role: "Art Collector from New York"
+  },
+  {
+    quote: "Volunteering as an Ambassador has been incredibly fulfilling. I'm helping preserve my community's traditions by bridging our local artisans to the world.",
+    name: "Rohan D.",
+    role: "KalaGhar Ambassador from Gujarat"
+  }
+];
+
+// --- The Component ---
+const WhatIsKalaGhar = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  // --- Functions to manually navigate testimonials ---
+  
+  // Using useCallback to prevent re-creation of this function on every render
+  const handleNext = useCallback(() => {
+    // Guard clause to prevent action during fade transition
+    if (isFading) return; 
+
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+      setIsFading(false);
+    }, 300); // Duration matches CSS transition
+  }, [isFading]); // Re-create only if isFading changes
+
+  const handlePrev = () => {
+    // Guard clause to prevent action during fade transition
+    if (isFading) return; 
+
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+      setIsFading(false);
+    }, 300);
+  };
+  
+  // --- Effect for automatic slideshow ---
+  useEffect(() => {
+    // This timer will now correctly call the 'handleNext' function.
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5000); // Change quote every 5 seconds
+
+    // Clean up the interval when the component is no longer on screen.
+    return () => clearInterval(timer);
+  }, [handleNext]); // The effect re-runs if handleNext is re-created.
+
+  const { quote, name, role } = testimonials[currentIndex];
+
+  return (
+    <section id="WhatIsKalaGhar" className="py-20 bg-white relative">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Left Column: Description */}
+          <div className="text-center lg:text-left">
+            <h3 className="text-4xl font-bold text-gray-800 mb-6">
+              What is <span className="text-black">Kala</span>
+              <span className="text-google-blue">Ghar</span>?
+            </h3>
+            <p className="text-lg text-gray-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              KalaGhar is a digital ecosystem designed to celebrate and empower 
+              artisans by connecting them with buyers, investors, and ambassadors 
+              worldwide. We bridge tradition with technology, helping preserve 
+              cultural heritage while creating sustainable growth opportunities.
+            </p>
+          </div>
+
+          {/* Right Column: Dynamic Testimonial Card with Navigation */}
+          <div className="relative">
+            <div className="bg-gray-50 rounded-2xl shadow-lg p-8 relative overflow-hidden min-h-[280px] flex items-center">
+                {/* Decorative quote SVG icon in the background */}
+                <svg className="absolute top-4 left-6 w-16 h-16 text-gray-200 opacity-50 transform -translate-x-4" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M9.333 22.667h4L15.333 16h-4L9.333 22.667zM22.667 22.667h4L28.667 16h-4L22.667 22.667zM4 28c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V16c0-1.1-.9-2-2-2h-8L8 4H4v12h6v12H6c-1.1 0-2 .9-2 2zM18 28c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V16c0-1.1-.9-2-2-2h-8l-4-10h-4v12h6v12h-2c-1.1 0-2 .9-2 2z"></path>
+                </svg>
+                
+                {/* Testimonial Content with Fade Transition */}
+                <div className={`w-full relative z-10 transition-opacity duration-300 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+                    <p className="text-xl italic text-gray-700 mb-6 font-serif">
+                        "{quote}"
+                    </p>
+                    <div className="text-right">
+                        <p className="font-bold text-gray-800">{name}</p>
+                        <p className="text-sm text-google-blue font-medium">{role}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* --- Navigation Buttons --- */}
+            <button 
+              onClick={handlePrev}
+              className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition z-20"
+              aria-label="Previous testimonial"
+            >
+              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+
+            <button 
+              onClick={handleNext}
+              className="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition z-20"
+              aria-label="Next testimonial"
+            >
+              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Findyourplace = () => (
-  <section id="findyourplace" className="py-16 bg-white relative">
-    <div className="container mx-auto px-6 text-center">
-      <h3 className="text-4xl font-bold text-gray-800 mb-6">
-        <span className="text-black">Find your Place</span>
-      </h3>
+  <section id="findyourplace" className="py-20 bg-gray-50 relative">
+    <div className="container mx-auto px-6">
+      <div className="text-center mb-12">
+        <h3 className="text-4xl font-bold text-gray-800 mb-4">
+          <span className="text-black">Find Your Place in Our Community</span>
+        </h3>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Whether you create, collect, invest, or champion, there's a vital role for you at KalaGhar.
+        </p>
+      </div>
 
-      <div className="flex justify-center gap-6 flex-wrap">
-        <Link
-          to="/artisan"
-          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
-        >
-          <h4 className="text-xl font-semibold text-google-yellow mb-2">For Artisans</h4>
-          <p className="text-gray-600 text-sm">Showcase and sell your craft to a global audience.</p>
+      {/* New Text-Focused Layout (No Icons) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        {/* Artisan Card */}
+        <Link to="/artisan" className="group block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+          <div className="p-8">
+            <h4 className="text-3xl font-bold text-google-yellow mb-3">For Artisans</h4>
+            <p className="text-gray-600 leading-relaxed">Showcase your craft, access powerful tools, and sell to a global audience that values your unique talent.</p>
+          </div>
+          {/* Decorative accent bar */}
+          <div className="h-2 bg-google-yellow"></div>
         </Link>
 
-        <Link
-          to="/buyer"
-          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
-        >
-          <h4 className="text-xl font-semibold text-google-green mb-2">For Buyers</h4>
-          <p className="text-gray-600 text-sm">Discover authentic handmade treasures.</p>
+        {/* Buyer Card */}
+        <Link to="/buyer" className="group block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+          <div className="p-8">
+            <h4 className="text-3xl font-bold text-google-green mb-3">For Buyers</h4>
+            <p className="text-gray-600 leading-relaxed">Discover authentic, handcrafted treasures. Connect with creators and own a piece of their story.</p>
+          </div>
+          <div className="h-2 bg-google-green"></div>
         </Link>
 
-        <Link
-          to="/investor"
-          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
-        >
-          <h4 className="text-xl font-semibold text-google-blue mb-2">For Investors</h4>
-          <p className="text-gray-600 text-sm">Support projects that fuel creativity and growth.</p>
+        {/* Investor Card */}
+        <Link to="/investor" className="group block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+          <div className="p-8">
+            <h4 className="text-3xl font-bold text-google-blue mb-3">For Investors</h4>
+            <p className="text-gray-600 leading-relaxed">Fund creative projects with real impact. Support the growth of cultural heritage and sustainable businesses.</p>
+          </div>
+          <div className="h-2 bg-google-blue"></div>
         </Link>
 
-        <Link
-          to="/ambassador"
-          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
-        >
-          <h4 className="text-xl font-semibold text-google-red mb-2">For Ambassadors</h4>
-          <p className="text-gray-600 text-sm">Be a champion for artisans and heritage.</p>
+        {/* Ambassador Card */}
+        <Link to="/ambassador" className="group block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+          <div className="p-8">
+            <h4 className="text-3xl font-bold text-google-red mb-3">For Ambassadors</h4>
+            <p className="text-gray-600 leading-relaxed">Be a champion for artisans. Volunteer your passion to mentor, connect, and empower creators in your community.</p>
+          </div>
+          <div className="h-2 bg-google-red"></div>
         </Link>
       </div>
     </div>
