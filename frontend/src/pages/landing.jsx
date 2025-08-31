@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // --- SVG Icons (with Google colors) ---
 const ArtisanIcon = () => (
@@ -118,11 +119,16 @@ const AnimatedSection = ({ children, className = "" }) => {
 const Header = ({ onLoginClick }) => (
   <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 shadow-md">
     <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 className="text-3xl font-bold text-gray-800 tracking-tighter">
-        Kala<span className="text-google-blue">Ghar</span>
-      </h1>
+      <div className="flex items-center space-x-3">
+        <img src="/logo.png" alt="Kalaghar Logo" className="h-10 w-10 object-contain" />
+        <h1 className="text-3xl font-bold text-gray-800 tracking-tighter">
+          Kala<span className="text-google-blue">Ghar</span>
+        </h1>
+      </div>
+
       <nav className="hidden md:flex space-x-8 text-gray-700 font-medium">
         <a href="#WhatIsKalaGhar" className="hover:text-google-blue transition">About</a>
+        <a href="#findyourplace" className="hover:text-google-blue transition">Join as</a>
         <a href="#ExplainerCarousel" className="hover:text-google-blue transition">Features</a>
         <a href="#roles" className="hover:text-google-blue transition">Apply Now</a>
         <a href="#contact" className="hover:text-google-blue transition">Contact</a>
@@ -151,9 +157,7 @@ const Hero = () => (
           <span className="text-google-blue">Opportunity</span>.
         </h2>
         <p className="text-lg text-white/90 font-medium mb-8">
-          KalaGhar is a vibrant digital ecosystem dedicated to celebrating and
-          empowering artisans, connecting them with a global community of
-          buyers, investors, and advocates.
+          
         </p>
         <a
           href="#roles"
@@ -171,7 +175,7 @@ const WhatIsKalaGhar = () => (
     <div className="container mx-auto px-6 text-center">
       <h3 className="text-4xl font-bold text-gray-800 mb-6">
         What is <span className="text-black">Kala</span>
-        <span className="text-google-blue">Ghar</span>?
+        <span className="text-google-blue">Ghar</span> ?
       </h3>
       <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
         KalaGhar is a digital ecosystem designed to celebrate and empower 
@@ -179,23 +183,49 @@ const WhatIsKalaGhar = () => (
         worldwide. We bridge tradition with technology, helping preserve 
         cultural heritage while creating sustainable growth opportunities.
       </p>
+    </div>
+  </section>
+);
+
+const Findyourplace = () => (
+  <section id="findyourplace" className="py-16 bg-white relative">
+    <div className="container mx-auto px-6 text-center">
+      <h3 className="text-4xl font-bold text-gray-800 mb-6">
+        <span className="text-black">Find your Place</span>
+      </h3>
+
       <div className="flex justify-center gap-6 flex-wrap">
-        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+        <Link
+          to="/artisan"
+          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
+        >
           <h4 className="text-xl font-semibold text-google-yellow mb-2">For Artisans</h4>
           <p className="text-gray-600 text-sm">Showcase and sell your craft to a global audience.</p>
-        </div>
-        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+        </Link>
+
+        <Link
+          to="/buyer"
+          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
+        >
           <h4 className="text-xl font-semibold text-google-green mb-2">For Buyers</h4>
           <p className="text-gray-600 text-sm">Discover authentic handmade treasures.</p>
-        </div>
-        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+        </Link>
+
+        <Link
+          to="/investor"
+          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
+        >
           <h4 className="text-xl font-semibold text-google-blue mb-2">For Investors</h4>
           <p className="text-gray-600 text-sm">Support projects that fuel creativity and growth.</p>
-        </div>
-        <div className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition">
+        </Link>
+
+        <Link
+          to="/ambassador"
+          className="bg-white shadow-md rounded-xl p-6 w-64 hover:shadow-xl transition block"
+        >
           <h4 className="text-xl font-semibold text-google-red mb-2">For Ambassadors</h4>
           <p className="text-gray-600 text-sm">Be a champion for artisans and heritage.</p>
-        </div>
+        </Link>
       </div>
     </div>
   </section>
@@ -345,7 +375,11 @@ const LoginModal = ({ isOpen, onClose, selectedRole }) => {
 
 
 const Footer = () => (
+    
   <footer className="bg-google-blue text-white">
+     <section 
+      id="contact" 
+    ></section>
     <div className="container mx-auto px-6 py-12">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         <div>
@@ -404,9 +438,7 @@ const Footer = () => (
         &copy; {new Date().getFullYear()} KalaGhar. All Rights Reserved.
       </div>
     </div>
-    <section 
-      id="contact" 
-    ></section>
+   
   </footer>
 );
 
@@ -439,6 +471,7 @@ export default function LandingPage() {
       <main>
         <Hero />
         <WhatIsKalaGhar />
+        <Findyourplace />
         <ExplainerCarousel />
         <Roles onRoleSelect={handleRoleSelect} />
 
