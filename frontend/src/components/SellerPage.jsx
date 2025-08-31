@@ -71,6 +71,11 @@ const SellerPage = () => {
                     <div className="text-center mb-12">
                         <p className="text-lg text-gray-500">Products by</p>
                         <h1 className="text-5xl font-extrabold text-gray-900">{decodedSellerName}</h1>
+                        
+                        {/* --- ADDED INVEST BUTTON --- */}
+                        <button className="mt-6 bg-google-green text-white font-bold py-3 px-8 rounded-xl hover:bg-green-700 transition-colors duration-300 text-lg shadow-md hover:shadow-lg">
+                            Invest in this business
+                        </button>
                     </div>
 
                     {/* Product Grid */}

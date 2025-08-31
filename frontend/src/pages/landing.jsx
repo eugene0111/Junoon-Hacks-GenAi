@@ -329,7 +329,7 @@ const Findyourplace = () => (
         </Link>
 
         {/* Investor Card */}
-        <Link to="/investor" className="group block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+        <Link to="/buyer" className="group block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
           <div className="p-8">
             <h4 className="text-3xl font-bold text-google-blue mb-3">For Investors</h4>
             <p className="text-gray-600 leading-relaxed">Fund creative projects with real impact. Support the growth of cultural heritage and sustainable businesses.</p>
